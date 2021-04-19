@@ -56,7 +56,9 @@ function renderThreeImages() {
     firstImage.src = BusMall.allElements[firstIndex].path;
     secondImage.src = BusMall.allElements[secondIndex].path;
     thirdImage.src = BusMall.allElements[thirdIndex].path;
-
+    BusMall.allElements[firstIndex].imageTimes++;
+    BusMall.allElements[secondIndex].imageTimes++;
+    BusMall.allElements[thirdIndex].imageTimes++;
 }
 
 
@@ -69,19 +71,19 @@ thirdImage.addEventListener('click', handleClicking);
 
 let maxAttempts = 5;
 let count = 0;
-let button=null;
+let button = null;
 function handleClicking(event) {
     if (maxAttempts > count) {
 
         if (event.target.id === 'first-Image') {
             BusMall.allElements[firstIndex].votes++;
-            BusMall.allElements[firstIndex].imageTimes++;
+
         } else if (event.target.id === 'second-Image') {
             BusMall.allElements[secondIndex].votes++;
-            BusMall.allElements[secondIndex].imageTimes++;
+
         } else if (event.target.id === 'third-Image') {
             BusMall.allElements[thirdIndex].votes++;
-            BusMall.allElements[thirdIndex].imageTimes++;
+
         }
         count++;
         renderThreeImages();
