@@ -6,7 +6,10 @@ let thirdImage = document.getElementById('third-Image');
 let firstIndex;
 let secondIndex;
 let thirdIndex;
-let times = 0;
+let compareIndex = [firstIndex, secondIndex, thirdIndex];
+
+
+let arrOfnames = [];
 BusMall.allElements = [];
 
 function BusMall(name, path) {
@@ -15,6 +18,7 @@ function BusMall(name, path) {
     this.imageTimes = 0;
     this.votes = 0;
     BusMall.allElements.push(this);
+    arrOfnames.push(this.name);
 }
 
 new BusMall('bag', '../Images/bag.jpg');
@@ -41,6 +45,15 @@ new BusMall('wine-glass', '../Images/wine-glass.jpg');
 
 function generatRandomIndex() {
     return Math.floor(Math.random() * BusMall.allElements.length);
+
+
+    // if (firstTry.length !== 0){
+    //     while(firstTry.includes(leftImageIndex) || firstTry.includes(rightImageIndex) || firstTry.includes(midleImageIndex))
+    //     leftImageIndex = generateRandomNo ();
+    //     rightImageIndex = generateRandomNo();
+    //     midleImageIndex = generateRandomNo();
+    
+    // }
 }
 
 
@@ -48,11 +61,21 @@ function renderThreeImages() {
     firstIndex = generatRandomIndex();
     secondIndex = generatRandomIndex();
     thirdIndex = generatRandomIndex();
-
-    while (firstIndex === secondIndex || firstIndex === thirdIndex || secondIndex === thirdIndex) {
+ 
+    while (firstIndex === secondIndex || firstIndex === thirdIndex || secondIndex === thirdIndex || compareIndex.includes(firstIndex)|| compareIndex.includes(secondIndex)|| compareIndex.includes(thirdIndex)) {
         firstIndex = generatRandomIndex();
         secondIndex = generatRandomIndex();
+        thirdIndex = generatRandomIndex();
     }
+
+    // while(compareIndex.includes(firstIndex)|| compareIndex.includes(secondIndex)|| compareIndex.includes(thirdIndex)){
+    //     firstIndex = generatRandomIndex();
+    //     secondIndex = generatRandomIndex();
+    //     thirdIndex = generatRandomIndex();
+    // }
+compareIndex =[firstIndex, secondIndex, thirdIndex];
+console.log(compareIndex);
+
     firstImage.src = BusMall.allElements[firstIndex].path;
     secondImage.src = BusMall.allElements[secondIndex].path;
     thirdImage.src = BusMall.allElements[thirdIndex].path;
@@ -69,7 +92,7 @@ secondImage.addEventListener('click', handleClicking);
 thirdImage.addEventListener('click', handleClicking);
 
 
-let maxAttempts = 5;
+let maxAttempts = 25;
 let count = 0;
 let button = null;
 function handleClicking(event) {
@@ -88,6 +111,7 @@ function handleClicking(event) {
         count++;
         renderThreeImages();
     } else {
+
         let Section = document.getElementById('section');
         button = document.createElement('button');
         Section.appendChild(button);
@@ -96,15 +120,58 @@ function handleClicking(event) {
         firstImage.removeEventListener('click', handleClicking);
         secondImage.removeEventListener('click', handleClicking);
         thirdImage.removeEventListener('click', handleClicking);
+
     }
 }
 
+
+let arrOfVotes = [];
+let arrOfShown = [];
 function reportResults() {
     let ul = document.getElementById('list');
     for (let i = 0; i < BusMall.allElements.length; i++) {
+        arrOfVotes.push(BusMall.allElements[i].votes);
+        arrOfShown.push(BusMall.allElements[i].imageTimes);
         let li = document.createElement('li');
         ul.appendChild(li);
         li.textContent = `${BusMall.allElements[i].name} had ${BusMall.allElements[i].votes} votes, and was seen ${BusMall.allElements[i].imageTimes} times.`;
     }
+    chart();
     button.removeEventListener('click', reportResults);
 }
+
+
+function chart() {
+    let ctx = document.getElementById('myChart')
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: arrOfnames,
+            datasets: [{
+                label: 'Number Of votes',
+                data: arrOfVotes,
+                backgroundColor: [
+                    'rgba(155, 9, 13,0.7)',
+                ],
+                borderWidth: 1
+            }, {
+                label: 'Number of Shown',
+                data: arrOfShown,
+                backgroundColor: [
+                    "rgb(192,192,192)"
+                ],
+                borderWidth: 1
+            }]
+        }
+    })
+}
+
+
+
+// let greencell = ["item1", "item2", etc]
+// var cells = document.getElementById("mytable").getElementsByTagName("td");
+// for (let i = 0; i < cells.length; i++) {
+//   if (cells[i].innerHTML == greencell[0]) {
+//     cells[i].style.backgroundColor = "#80ff80";
+//   }
+// }
