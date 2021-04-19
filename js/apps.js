@@ -67,7 +67,7 @@ secondImage.addEventListener('click', handleClicking);
 thirdImage.addEventListener('click', handleClicking);
 
 
-let maxAttempts = 5;
+let maxAttempts = 25;
 let count = 0;
 let button=null;
 function handleClicking(event) {
