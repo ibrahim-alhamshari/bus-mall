@@ -84,7 +84,7 @@ renderThreeImages();
 container.addEventListener('click', handleClicking)
 
 
-let maxAttempts = 5;
+let maxAttempts = 25;
 let count = 0;
 let button = null;
 
